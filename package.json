@@ -1,0 +1,109 @@
+{
+  "name": "worksnaps-time-tracker",
+  "displayName": "Worksnaps Time Tracker",
+  "description": "Display your Worksnaps time tracking statistics directly in the VSCode status bar",
+  "version": "1.0.0",
+  "publisher": "curkan",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "worksnaps",
+    "time tracker",
+    "productivity",
+    "status bar"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Worksnaps Time Tracker",
+      "properties": {
+        "worksnaps.apiToken": {
+          "type": "string",
+          "default": "",
+          "description": "Your Worksnaps API token"
+        },
+        "worksnaps.projectId": {
+          "type": "string",
+          "default": "",
+          "description": "Your Worksnaps project ID"
+        },
+        "worksnaps.userId": {
+          "type": "string",
+          "default": "",
+          "description": "Your Worksnaps user ID (optional, will be auto-detected)"
+        },
+        "worksnaps.updateInterval": {
+          "type": "number",
+          "default": 60,
+          "description": "Update interval in seconds",
+          "minimum": 30,
+          "maximum": 600
+        },
+        "worksnaps.targetHours": {
+          "type": "number",
+          "default": 8,
+          "description": "Target working hours per day",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "worksnaps.showTime": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show worked time"
+        },
+        "worksnaps.showActivity": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show activity percentage"
+        },
+        "worksnaps.showRemaining": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show remaining time"
+        },
+        "worksnaps.prefix": {
+          "type": "string",
+          "default": "WS:",
+          "description": "Status bar prefix text"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "worksnaps.refreshData",
+        "title": "Worksnaps: Refresh Data"
+      },
+      {
+        "command": "worksnaps.openSettings",
+        "title": "Worksnaps: Open Settings"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "mkdir -p build && vsce package --allow-star-activation --out build/worksnaps-time-tracker-${npm_package_version}.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^6.x",
+    "@typescript-eslint/parser": "^6.x",
+    "eslint": "^8.x",
+    "typescript": "^5.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/curkan/vscode-plugin-worksnaps"
+  },
+  "license": "MIT"
+}
