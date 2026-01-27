@@ -152,7 +152,7 @@ export class WorksnapsApiClient {
         }
 
         const avgActivity = activities.length > 0
-            ? Math.round(activities.reduce((sum, activity) => sum + activity, 0) / activities.length)
+            ? Math.trunc(activities.reduce((sum, activity) => sum + activity, 0) / activities.length)
             : 0;
 
         const hours = totalMinutes / 60;
