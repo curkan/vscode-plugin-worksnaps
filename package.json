@@ -4,6 +4,7 @@
   "description": "Display your Worksnaps time tracking statistics directly in the VSCode status bar",
   "version": "1.0.0",
   "publisher": "curkan",
+  "icon": "misc/icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },
