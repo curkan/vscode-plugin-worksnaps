@@ -24,11 +24,11 @@ Display your Worksnaps time tracking statistics directly in the VSCode status ba
 
 ## Display Example
 
-Status bar shows: `WS: 9:30 ↓ -3:10 | ✓ 87%`
+Status bar shows: `WS: 9:30 -3:10 | ✓ 87%`
 
 Where:
 - `9:30` = worked hours today (hours:minutes, rounded to 10-minute intervals)
-- `↓ -3:10` = 3 hours 10 minutes remaining (red down arrow if remaining, green up arrow if overtime)
+- `-3:10` = 3 hours 10 minutes remaining
 - `✓ 87%` = activity percentage (✓ for ≥80%, ⚠ for 60-79%, ✗ for <60%)
 
 ## Requirements
