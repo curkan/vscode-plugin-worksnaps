@@ -1,6 +1,8 @@
 # Worksnaps Time Tracker для VSCode
 
-[🇷🇺 Русский](README.md) | [🇬🇧 English](README_EN.md)
+[Русский](README.md) | [English](README_EN.md)
+
+![Worksnaps VSCode](misc/vscode-worksnaps.png)
 
 ---
 
