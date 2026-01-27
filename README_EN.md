@@ -39,13 +39,6 @@ Where:
 
 ## Installation
 
-### From VSCode Marketplace (Coming Soon)
-
-1. Open VSCode
-2. Go to **Extensions** (Ctrl+Shift+X / Cmd+Shift+X)
-3. Search for "Worksnaps Time Tracker"
-4. Click **Install**
-
 ### Manual Installation from VSIX
 
 1. Download the latest `.vsix` release from [Releases](https://github.com/curkan/vscode-plugin-worksnaps/releases)
@@ -319,13 +312,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-### Code Guidelines
-
-- Use TypeScript with strict types
-- Follow the project's ESLint rules
-- Write clear comments
-- Test changes before submitting PR
 
 ## Related Projects
 
