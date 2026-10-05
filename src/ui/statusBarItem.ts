@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { WorksnapsService } from '../service/worksnapsService';
-import { WorksnapsData } from '../api/worksnapsApiClient';
+import { WorksnapsApiClient, WorksnapsData } from '../api/worksnapsApiClient';
+import { TrackerApiClient, TrackerHoursData } from '../api/trackerApiClient';
 
 export class WorksnapsStatusBarItem implements vscode.Disposable {
     private statusBarItem: vscode.StatusBarItem;
@@ -67,7 +68,7 @@ export class WorksnapsStatusBarItem implements vscode.Disposable {
         }
     }
 
-    private buildOutput(data: WorksnapsData, config: any): void {
+    private buildOutput(data: WorksnapsData, config: ReturnType<WorksnapsStatusBarItem['getConfiguration']>): void {
         let text = config.prefix;
 
         if (config.showTime) {
@@ -80,6 +81,17 @@ export class WorksnapsStatusBarItem implements vscode.Disposable {
 
         if (config.showActivity) {
             text += ' | ' + this.formatActivityWithEmoji(data.activity);
+        }
+
+        if (config.showTrackerRemaining) {
+            const trackerData = this.service.getTrackerData();
+            if (trackerData !== null) {
+                text += ' | ' + this.formatTrackerRemaining(trackerData);
+            } else if (this.service.getTrackerLastError() !== null) {
+                text += ' | T:$(warning)';
+            } else if (config.redmineApiToken) {
+                text += ' | T:...';
+            }
         }
 
         if (this.service.isUsingCachedData()) {
@@ -128,6 +140,26 @@ export class WorksnapsStatusBarItem implements vscode.Disposable {
         }
     }
 
+    /**
+     * Format remaining time from Tracker API (worked vs required up to today)
+     * Green for overtime, Red for remaining
+     */
+    private formatTrackerRemaining(trackerData: TrackerHoursData): string {
+        // hoursOnNow — accumulated required hours up to today (in hours)
+        // userMinutes — total worked minutes this month
+        const requiredMinutes = trackerData.hoursOnNow * 60;
+        const diff = trackerData.userMinutes - requiredMinutes; // positive = overtime, negative = undertime
+
+        const absMinutes = Math.abs(diff);
+        const hours = Math.floor(absMinutes / 60);
+        const mins = absMinutes % 60;
+
+        const emoji = diff >= 0 ? '🟢' : '🔴';
+        const sign = diff >= 0 ? '+' : '-';
+
+        return `T: ${emoji} (${sign}${hours}:${mins.toString().padStart(2, '0')})`;
+    }
+
     private formatActivityWithEmoji(activity: number): string {
         const emoji = this.getActivityEmoji(activity);
         return `${emoji} ${activity}%`;
@@ -144,7 +176,13 @@ export class WorksnapsStatusBarItem implements vscode.Disposable {
     }
 
     private getTooltipText(): string {
+        const stats = `${WorksnapsApiClient.getStats()}\n${TrackerApiClient.getStats()}`;
+        return `${this.getTooltipBaseText()}\n---\n${stats}`;
+    }
+
+    private getTooltipBaseText(): string {
         const error = this.service.getLastError();
+        const trackerError = this.service.getTrackerLastError();
         const config = this.getConfiguration();
 
         if (error !== null) {
@@ -157,6 +195,10 @@ export class WorksnapsStatusBarItem implements vscode.Disposable {
 
         if (!config.apiToken || !config.projectId) {
             return 'Worksnaps: Not configured\nGo to Settings → Extensions → Worksnaps';
+        }
+
+        if (config.showTrackerRemaining && trackerError !== null) {
+            return `Worksnaps Time Tracker\nTracker Error: ${trackerError}\nClick to refresh`;
         }
 
         return 'Worksnaps Time Tracker\nClick to refresh';
@@ -174,7 +216,10 @@ export class WorksnapsStatusBarItem implements vscode.Disposable {
             showTime: config.get<boolean>('showTime', true),
             showActivity: config.get<boolean>('showActivity', true),
             showRemaining: config.get<boolean>('showRemaining', true),
-            prefix: config.get<string>('prefix', 'WS:')
+            prefix: config.get<string>('prefix', 'WS:'),
+            redmineApiToken: config.get<string>('redmineApiToken', ''),
+            trackerEndpointUrl: config.get<string>('trackerEndpointUrl', ''),
+            showTrackerRemaining: config.get<boolean>('showTrackerRemaining', false)
         };
     }
 

@@ -13,7 +13,16 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-        "@typescript-eslint/naming-convention": "warn",
+        "@typescript-eslint/naming-convention": [
+            "warn",
+            { "selector": "default", "format": ["camelCase"], "leadingUnderscore": "allow" },
+            { "selector": "variable", "format": ["camelCase", "UPPER_CASE"] },
+            { "selector": "typeLike", "format": ["PascalCase"] },
+            { "selector": "import", "format": ["camelCase", "PascalCase"] },
+            { "selector": "classProperty", "modifiers": ["static", "readonly"], "format": ["camelCase", "UPPER_CASE"] },
+            { "selector": "objectLiteralProperty", "format": ["camelCase", "PascalCase"] },
+            { "selector": "objectLiteralProperty", "modifiers": ["requiresQuotes"], "format": null }
+        ],
         "@typescript-eslint/semi": "warn",
         "curly": "warn",
         "eqeqeq": "warn",

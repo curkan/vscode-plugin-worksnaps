@@ -11,6 +11,10 @@ export class WorksnapsApiClient {
     private userId: string | null;
     private readonly authHeader: string;
 
+    private static totalRequests = 0;
+    private static requestsToday = 0;
+    private static lastResetDay = -1;
+
     constructor(
         private readonly apiToken: string,
         private readonly projectId: string,
@@ -21,7 +25,24 @@ export class WorksnapsApiClient {
         this.authHeader = `Basic ${credentials}`;
     }
 
+    static getStats(): string {
+        return `WorksnapsAPI: total=${WorksnapsApiClient.totalRequests}, today=${WorksnapsApiClient.requestsToday}`;
+    }
+
+    private static trackRequest(): void {
+        const today = new Date().getDate();
+        if (today !== WorksnapsApiClient.lastResetDay) {
+            WorksnapsApiClient.requestsToday = 0;
+            WorksnapsApiClient.lastResetDay = today;
+        }
+        WorksnapsApiClient.totalRequests++;
+        WorksnapsApiClient.requestsToday++;
+        console.log(`[Worksnaps] WorksnapsAPI request #${WorksnapsApiClient.requestsToday} today (#${WorksnapsApiClient.totalRequests} total)`);
+    }
+
     private async makeRequest(path: string): Promise<string> {
+        WorksnapsApiClient.trackRequest();
+
         return new Promise((resolve, reject) => {
             const url = `${this.apiBaseUrl}${path}`;
 

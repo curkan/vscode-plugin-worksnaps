@@ -8,7 +8,7 @@
 
 ![VSCode](https://img.shields.io/badge/VSCode-1.74+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)
+![Version](https://img.shields.io/badge/version-1.1.0-brightgreen.svg)
 
 Отображайте статистику отслеживания времени Worksnaps прямо в строке состояния VSCode.
 
@@ -101,6 +101,16 @@ curl -u "YOUR_API_TOKEN:" https://api.worksnaps.com/api/projects.xml
    - **Target Hours**: Ваша дневная цель работы (по умолчанию: 8 часов)
    - **Display Options**: Выберите что показывать в строке состояния
 
+### 4. Tracker API (Redmine) — опционально
+
+Можно показывать баланс часов за месяц из трекера (эндпоинт `worksnaps/my_hours.json`):
+
+- **Tracker Endpoint Url**: полный URL эндпоинта, например `https://tracker.example.com/worksnaps/my_hours.json`
+- **Redmine Api Token**: API-ключ из профиля Redmine (**Моя учётная запись → Ключ доступа к API**)
+- **Show Tracker Remaining**: включить отображение
+
+В строке состояния появится `| T: 🟢 (+1:20)` — переработка, или `| T: 🔴 (-2:40)` — недоработка относительно нормы на сегодня (`user_minutes` против `hours_on_now`). `T:$(warning)` — ошибка запроса к трекеру (подробности в подсказке).
+
 **Альтернатива**: Используйте команду **Worksnaps: Open Settings** через Command Palette (Ctrl+Shift+P / Cmd+Shift+P)
 
 ## Использование
@@ -149,6 +159,9 @@ curl -u "YOUR_API_TOKEN:" https://api.worksnaps.com/api/projects.xml
 | `worksnaps.showTime` | true | Показывать отработанные часы |
 | `worksnaps.showActivity` | true | Показывать процент активности |
 | `worksnaps.showRemaining` | true | Показывать оставшееся время до цели |
+| `worksnaps.trackerEndpointUrl` | (пусто) | URL эндпоинта трекера (`.../worksnaps/my_hours.json`) |
+| `worksnaps.redmineApiToken` | (пусто) | API-ключ Redmine |
+| `worksnaps.showTrackerRemaining` | false | Показывать баланс часов за месяц из трекера |
 
 ### Редактирование через settings.json
 
@@ -164,6 +177,9 @@ curl -u "YOUR_API_TOKEN:" https://api.worksnaps.com/api/projects.xml
   "worksnaps.showTime": true,
   "worksnaps.showActivity": true,
   "worksnaps.showRemaining": true,
+  "worksnaps.trackerEndpointUrl": "https://tracker.example.com/worksnaps/my_hours.json",
+  "worksnaps.redmineApiToken": "your_redmine_api_key",
+  "worksnaps.showTrackerRemaining": true,
   "worksnaps.prefix": "WS:"
 }
 ```
@@ -333,6 +349,12 @@ vsce package
 https://github.com/curkan/vscode-plugin-worksnaps/issues
 
 ## История изменений
+
+### 1.1.0 - 2026-10-05
+
+- ✨ Баланс часов за месяц из Tracker API (Redmine, `worksnaps/my_hours.json`)
+- 📈 Счётчики запросов к API в подсказке
+- 🐛 Пауза между повторными запросами при ошибке API
 
 ### 1.0.0 (Первый релиз) - 2026-01-27
 

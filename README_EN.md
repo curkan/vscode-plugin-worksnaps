@@ -8,7 +8,7 @@
 
 ![VSCode](https://img.shields.io/badge/VSCode-1.74+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)
+![Version](https://img.shields.io/badge/version-1.1.0-brightgreen.svg)
 
 Display your Worksnaps time tracking statistics directly in the VSCode status bar.
 
@@ -101,6 +101,16 @@ curl -u "YOUR_API_TOKEN:" https://api.worksnaps.com/api/projects.xml
    - **Target Hours**: Your daily work goal (default: 8 hours)
    - **Display Options**: Choose what to show in the status bar
 
+### 4. Tracker API (Redmine) — optional
+
+You can show the monthly hours balance from the tracker (`worksnaps/my_hours.json` endpoint):
+
+- **Tracker Endpoint Url**: full endpoint URL, e.g. `https://tracker.example.com/worksnaps/my_hours.json`
+- **Redmine Api Token**: API key from your Redmine profile (**My account → API access key**)
+- **Show Tracker Remaining**: enable the display
+
+The status bar will show `| T: 🟢 (+1:20)` for overtime or `| T: 🔴 (-2:40)` for undertime relative to the required hours up to today (`user_minutes` vs `hours_on_now`). `T:$(warning)` means the tracker request failed (see tooltip for details).
+
 **Alternative**: Use the **Worksnaps: Open Settings** command via Command Palette (Ctrl+Shift+P / Cmd+Shift+P)
 
 ## Usage
@@ -149,6 +159,9 @@ Available via Command Palette (Ctrl+Shift+P / Cmd+Shift+P):
 | `worksnaps.showTime` | true | Display worked hours |
 | `worksnaps.showActivity` | true | Display activity percentage |
 | `worksnaps.showRemaining` | true | Display remaining time until target |
+| `worksnaps.trackerEndpointUrl` | (empty) | Tracker endpoint URL (`.../worksnaps/my_hours.json`) |
+| `worksnaps.redmineApiToken` | (empty) | Redmine API key |
+| `worksnaps.showTrackerRemaining` | false | Display monthly hours balance from the tracker |
 
 ### Editing via settings.json
 
@@ -164,6 +177,9 @@ You can configure the extension directly in `settings.json`:
   "worksnaps.showTime": true,
   "worksnaps.showActivity": true,
   "worksnaps.showRemaining": true,
+  "worksnaps.trackerEndpointUrl": "https://tracker.example.com/worksnaps/my_hours.json",
+  "worksnaps.redmineApiToken": "your_redmine_api_key",
+  "worksnaps.showTrackerRemaining": true,
   "worksnaps.prefix": "WS:"
 }
 ```
@@ -333,6 +349,12 @@ If you encounter issues, please report them on GitHub:
 https://github.com/curkan/vscode-plugin-worksnaps/issues
 
 ## Changelog
+
+### 1.1.0 - 2026-10-05
+
+- ✨ Monthly hours balance from Tracker API (Redmine, `worksnaps/my_hours.json`)
+- 📈 API request counters in tooltip
+- 🐛 Cooldown between retries on API errors
 
 ### 1.0.0 (Initial Release) - 2026-01-27
 

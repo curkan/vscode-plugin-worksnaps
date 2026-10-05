@@ -2,7 +2,7 @@
   "name": "worksnaps-time-tracker",
   "displayName": "Worksnaps Time Tracker",
   "description": "Display your Worksnaps time tracking statistics directly in the VSCode status bar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "curkan",
   "icon": "misc/icon.png",
   "engines": {
@@ -67,7 +67,22 @@
         "worksnaps.showRemaining": {
           "type": "boolean",
           "default": true,
-          "description": "Show remaining time"
+          "description": "Show remaining time (from Worksnaps)"
+        },
+        "worksnaps.trackerEndpointUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Tracker API (Redmine): full URL to the endpoint (e.g. https://tracker.example.com/worksnaps/my_hours.json)"
+        },
+        "worksnaps.redmineApiToken": {
+          "type": "string",
+          "default": "",
+          "description": "Tracker API (Redmine): API key from your Redmine profile (Profile → API access key)"
+        },
+        "worksnaps.showTrackerRemaining": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show remaining hours based on the Tracker API endpoint (worked this month vs required up to today)"
         },
         "worksnaps.prefix": {
           "type": "string",
